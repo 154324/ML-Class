@@ -1,0 +1,17 @@
+from sklearn.datasets import load_iris #iris 파일 로드를 합니다.
+import pandas as pd
+import numpy as np
+%matplotlib inline #산점도를 보기 위해 설정을 해주고
+
+Iris = load_iris() #iris 파일을 변수에 저장시켜준뒤
+ 
+Iris_Data = pd.DataFrame(data= np.c_[Iris['data'], Iris['target']], columns= Iris['feature_names'] + ['target'])
+Iris_Data['target'] = Iris_Data['target'].map({0: "setosa", 1: "versicolor", 2: "virginica"})
+ 
+X_Data = Iris_Data.iloc[:,:-1]
+Y_Data = Iris_Data.iloc[:,[-1]] #데이터를 저장 합니다.
+from sklearn.model_selection import train_test_split#train 함수를 이용해 데이터를 변환시켜 봅니다.
+X_train,X_test,y_train,y_test = train_test_split(Iris['data'],Iris['target'],random_state=0)
+iris_dataframe = pd.DataFrame(X_train,columns=Iris.feature_names)
+
+pd.plotting.scatter_matrix(iris_dataframe,c=y_train,alpha=8,figsize=(15,15),marker='o',hist_kwds={'bins':20},s=60)
